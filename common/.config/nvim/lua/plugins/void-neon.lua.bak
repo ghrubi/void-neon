@@ -1,0 +1,17 @@
+return {
+  {
+    "LazyVim/LazyVim",
+    opts = {
+      colorscheme = "void-neon",
+    },
+  },
+
+  {
+    "void-neon/theme",
+    name = "void-neon",
+    dir = vim.fn.stdpath("config") .. "/lua/void-neon",
+    lazy = false,
+    priority = 1000,
+  },
+}
+

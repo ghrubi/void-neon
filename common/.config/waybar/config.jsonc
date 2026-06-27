@@ -1,0 +1,123 @@
+{
+  "layer": "top",
+  "position": "top",
+  "height": 14,
+  "spacing": 0,
+
+  "modules-left": ["custom/workspace", "hyprland/window"],
+  "modules-center": ["clock"],
+  "modules-right": ["custom/media", "tray", "pulseaudio", "bluetooth", "network", "battery"],
+
+  "custom/workspace": {
+    "exec": "~/.config/waybar/scripts/current-workspace.sh",
+    "return-type": "json",
+    "escape": false,
+    "format": "{}"
+  },
+
+  "custom/window": {
+    "exec": "hyprctl activewindow -j | jq -r '.title'",
+    "interval": 1,
+    "max-length": 40
+  },
+
+  "hyprland/workspaces": {
+    "format": "[{id}]"
+  },
+
+  "hyprland/window": {
+    "format": "{title}",
+    "max-length": 40,
+    "separate-outputs": true,
+  },
+
+  "clock": {
+    "format": "{:%H:%M}"
+  },
+
+  "tray": {
+    "icon-size": 16,
+    "spacing": 0
+  },
+
+  "pulseaudio": {
+/*
+    "format": "{icon} {volume}%",
+*/
+    "format": "{icon}",
+    "format-muted": "󰝟",
+    "format-icons": {
+        "default": [
+            "󰕿",
+            "󰖀",
+            "󰕾"
+        ]
+    },
+    "on-click": "kitty pulsemixer"
+  },
+
+  "bluetooth": {
+    "format": "",
+    "format-on": "",
+    "format-off": "󰂲",
+    "format-connected": "",
+    "on-click": "kitty bluetui"
+  },
+
+  "network": {
+/*
+    "format-wifi": "󰖩 {essid}",
+    "format-ethernet": "󰈀 wired",
+    "format-disconnected": "󰖪 offline",
+*/
+/*
+    "format-wifi": "󰖩 ",
+    "format-ethernet": "󰈀 ",
+    "format-disconnected": "󰖪 ",
+*/
+/*
+    "format-wifi": "󰤨 {signalStrength}%",
+    "format-ethernet": "󰈀",
+    "format-disconnected": "󰤮",
+*/
+    "format-wifi": "{icon}",
+    "format-icons": [
+        "󰤟",
+        "󰤢",
+        "󰤥",
+        "󰤨"
+    ],
+    "format-disconnected": "󰤮",
+
+    "tooltip-format-wifi": "{ifname}: {ipaddr}",
+    "tooltip-format-ethernet": "{ifname}: {ipaddr}",
+    "on-click": "kitty nmtui"
+  },
+
+  "battery": {
+    "states": {
+        "warning": 30,
+        "critical": 15
+    },
+/*
+    "format": "{capacity}% {icon}",
+    "format-full": "{capacity}% ",
+    "format-charging": "{capacity}% ",
+    "format-charging": "{capacity}% ↑",
+    "format-plugged": "{capacity}% ",
+    "format-icons": ["", "", "", "", ""]
+*/
+    "format": "{capacity}%",
+    "format-full": "{capacity}%",
+    "format-charging": "{capacity}% ⚡",
+    "format-plugged": "{capacity}% ",
+  },
+
+  "custom/media": {
+    "exec": "playerctl metadata --format '{{artist}} - {{title}}' 2>/dev/null",
+    "interval": 2,
+    "max-length": 40,
+    "on-click": "playerctl play-pause"
+  }
+}
+

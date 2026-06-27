@@ -1,0 +1,10 @@
+# Cursor
+cursor-style = block
+cursor-style-blink = true
+shell-integration-features = no-cursor
+
+# Font
+font-family = "Inter Regular"
+font-size = 7.5
+
+theme = "UltraDark"
