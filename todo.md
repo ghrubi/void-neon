@@ -1,4 +1,5 @@
-nvim/lazyvim
+x nvim/lazyvim
+x starship
 app picker/launcher
 keybindings: backlight, keyboard backlight, move app/window, navigate app/window, vim throughout
 trackpad
