@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+[[ $# -gt 0 ]] || {
+  echo "usage: tui-run <command> [args...]" >&2
+  exit 1
+}
+
+cmd="$1"
+base="$(basename "$cmd")"
+
+class="$(printf '%s' "$base" | tr '[:upper:]' '[:lower:]')"
+title="$(printf '%s' "$base" | sed 's/.*/\L&/; s/^./\U&/')"
+
+exec ghostty \
+  --class="$class" \
+  --title="$title" \
+  -e "$@"

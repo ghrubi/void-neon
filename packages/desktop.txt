@@ -22,6 +22,7 @@ bluez
 wireplumber
 wireplumber-elogind
 pipewire
+power-profiles-daemon
 seatd
 brightnessctl
 playerctl

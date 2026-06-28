@@ -134,6 +134,25 @@ window#waybar {
     margin: 0;
 }
 
+#custom-powerprofile {
+    color: #00e5ff;
+    padding-right: 6px;
+    min-height: 0;
+    margin: 0;
+}
+
+#custom-powerprofile.performance {
+    color: #ffffff;
+}
+
+#custom-powerprofile.balanced {
+    color: #00e5ff;
+}
+
+#custom-powerprofile.power-saver {
+    color: #7dd3fc;
+}
+
 .modules-left {
     padding-left: 8px;
     padding-right: 0px;

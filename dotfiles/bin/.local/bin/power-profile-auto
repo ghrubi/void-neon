@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+state_file="${XDG_RUNTIME_DIR:-/tmp}/void-neon-power-profile-before-battery"
+
+battery_status() {
+  cat /sys/class/power_supply/BAT0/status 2>/dev/null || echo "Unknown"
+}
+
+while true; do
+  status="$(battery_status)"
+  current="$(powerprofilesctl get)"
+
+  if [[ "$status" == "Discharging" ]]; then
+    if [[ "$current" != "power-saver" ]]; then
+      echo "$current" > "$state_file"
+      powerprofilesctl set power-saver
+      pkill -RTMIN+8 waybar
+      osd "Power" "25" "󰁹"
+    fi
+  else
+    if [[ -f "$state_file" ]]; then
+      previous="$(cat "$state_file")"
+      rm -f "$state_file"
+
+      if [[ "$previous" != "power-saver" ]]; then
+        powerprofilesctl set "$previous"
+        pkill -RTMIN+8 waybar
+        if [[ "$previous" == "performance" ]]; then
+          osd "Power" "100" "󰚥"
+        else
+          osd "Power" "50" "󰚥"
+        fi
+      fi
+    fi
+  fi
+
+  sleep 10
+done

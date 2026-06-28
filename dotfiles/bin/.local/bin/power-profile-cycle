@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+current="$(powerprofilesctl get)"
+
+power_pct="100"
+power_icon="󰐥"
+case "$current" in
+  power-saver)
+    next="balanced"
+    power_pct="50"
+    power_icon="󰾅"
+    ;;
+  balanced)
+    next="performance"
+    power_pct="100"
+    power_icon="󰓅"
+    ;;
+  performance)
+    next="power-saver"
+    power_pct="25"
+    power_icon="󰌪"
+    ;;
+  *)
+    next="balanced"
+    ;;
+esac
+
+powerprofilesctl set "$next"
+pkill -RTMIN+8 waybar
+osd "Power" "$power_pct" "$power_icon"
+

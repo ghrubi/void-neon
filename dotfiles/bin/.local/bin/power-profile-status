@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+profile="$(powerprofilesctl get)"
+
+case "$profile" in
+  performance)
+    icon="󰓅"
+    class="performance"
+    ;;
+  balanced)
+    icon="󰾅"
+    class="balanced"
+    ;;
+  power-saver)
+    icon="󰌪"
+    class="power-saver"
+    ;;
+  *)
+    icon="?"
+    class="unknown"
+    ;;
+esac
+
+printf '{"text":"%s","tooltip":"Power profile: %s","class":"%s"}\n' \
+  "$icon" "$profile" "$class"

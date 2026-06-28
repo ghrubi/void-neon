@@ -6,7 +6,7 @@
 
   "modules-left": ["custom/workspace", "hyprland/window"],
   "modules-center": ["clock"],
-  "modules-right": ["custom/media", "tray", "pulseaudio", "bluetooth", "network", "battery"],
+  "modules-right": ["custom/media", "tray", "pulseaudio", "bluetooth", "custom/powerprofile", "network", "battery"],
 
   "custom/workspace": {
     "exec": "~/.config/waybar/scripts/current-workspace.sh",
@@ -28,7 +28,7 @@
   "hyprland/window": {
     "format": "{title}",
     "max-length": 40,
-    "separate-outputs": true,
+    "separate-outputs": true
   },
 
   "clock": {
@@ -53,7 +53,7 @@
             "󰕾"
         ]
     },
-    "on-click": "kitty pulsemixer"
+    "on-click": "tui-run pulsemixer"
   },
 
   "bluetooth": {
@@ -61,7 +61,7 @@
     "format-on": "",
     "format-off": "󰂲",
     "format-connected": "",
-    "on-click": "kitty bluetui"
+    "on-click": "tui-run bluetui"
   },
 
   "network": {
@@ -91,7 +91,7 @@
 
     "tooltip-format-wifi": "{ifname}: {ipaddr}",
     "tooltip-format-ethernet": "{ifname}: {ipaddr}",
-    "on-click": "kitty nmtui"
+    "on-click": "tui-run nmtui"
   },
 
   "battery": {
@@ -110,7 +110,7 @@
     "format": "{capacity}%",
     "format-full": "{capacity}%",
     "format-charging": "{capacity}% ⚡",
-    "format-plugged": "{capacity}% ",
+    "format-plugged": "{capacity}% "
   },
 
   "custom/media": {
@@ -118,6 +118,14 @@
     "interval": 2,
     "max-length": 40,
     "on-click": "playerctl play-pause"
+  },
+
+  "custom/powerprofile": {
+    "exec": "power-profile-status",
+    "return-type": "json",
+    "signal": 8,
+    "on-click": "power-profile-cycle",
+    "tooltip": true
   }
 }
 
