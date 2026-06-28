@@ -1,0 +1,10 @@
+neovim
+nodejs
+pnpm
+gcc
+make
+cmake
+unzip
+rust
+cargo
+go
