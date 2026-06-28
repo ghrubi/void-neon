@@ -1,22 +1,24 @@
 # Void Neon
 
-A minimalist Void Linux workstation configuration inspired by Omarchy, but optimized for older Intel MacBooks.
+A reproducible, keyboard-first desktop environment for Void Linux on Intel MacBooks.
 
-## Design Principles
+## Design
 
-- Pure black backgrounds
-- Inter typography
-- Dense information
+- Pure black surfaces
 - Cyan accents
-- Keyboard-first workflow
-- Fast startup
-- Declarative configuration
-
-## Components
-
+- Inter typography
 - Hyprland
 - Ghostty
-- Waybar
-- Starship
-- Neovim (Void Neon theme)
-- Zsh
+- Neovim
+- Yazi
+- Fuzzel
+
+## Status
+
+Early development.
+
+## Goals
+
+- Reproducible installs
+- Minimal dependencies
+- Machine-specific polish
