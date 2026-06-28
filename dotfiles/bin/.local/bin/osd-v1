@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+title="${1:-OSD}"
+value="${2:-0}"
+icon="${3:-}"
+timeout=1000
+
+notify-send \
+  -a "Void Neon" \
+  -r 91190 \
+  -h string:x-canonical-private-synchronous:osd \
+  -h int:value:"$value" \
+  -t ${timeout} \
+  "${icon} ${title}" \
+  "${value}%"

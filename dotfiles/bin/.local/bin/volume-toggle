@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+
+if wpctl get-volume @DEFAULT_AUDIO_SINK@ | grep -q MUTED; then
+  osd "Volume" "0" "󰖁"
+else
+  value="$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print int($2 * 100)}')"
+  osd "Volume" "$value" ""
+fi

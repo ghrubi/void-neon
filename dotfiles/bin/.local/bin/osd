@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+title="${1:-OSD}"
+value="${2:-0}"
+icon="${3:-}"
+timeout=1000
+
+display_value="$value"
+
+# Bar is capped at 100%, text is not.
+bar_value=$value
+(( bar_value > 100 )) && bar_value=100
+(( bar_value < 0 )) && bar_value=0
+
+filled=$(((bar_value + 5) / 10))
+
+bar=""
+for ((i=0; i<filled; i++)); do
+    bar+="█"
+done
+
+notify-send \
+    -a "Void Neon" \
+    -r 91190 \
+    -t ${timeout} \
+    -h string:x-canonical-private-synchronous:osd \
+    "${icon} ${bar} ${display_value}%" \
+    " "

@@ -13,6 +13,7 @@ hyprshutdown
 hyprsunset
 fuzzel
 cliphist
+brightnessctl
 chromium
 NetworkManager
 blueman
