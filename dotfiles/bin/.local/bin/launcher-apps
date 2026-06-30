@@ -1,4 +1,22 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-fuzzel
+cache="$(mktemp)"
+trap 'rm -f "$cache"' EXIT
+
+desktop-list > "$cache"
+
+selection="$(
+  cut -f1 "$cache" |
+    fuzzel --dmenu --prompt='❯ app '
+)" || exit 0
+
+[[ -n "$selection" ]] || exit 0
+
+desktop_file="$(
+  awk -F '\t' -v app="$selection" '$1 == app { print $2; exit }' "$cache"
+)"
+
+[[ -n "$desktop_file" ]] || exit 1
+
+launcher-desktop "$desktop_file"

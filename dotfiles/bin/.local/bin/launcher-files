@@ -21,4 +21,5 @@ file="$(
 file="${file/#\~/$HOME}"
 
 #xdg-open "$file" >/dev/null 2>&1 &
-ghostty -e "$editor" "$file" > /dev/null 2&1 &
+# ghostty -e "$editor" "$file" > /dev/null 2&1 &
+launcher-open "$file"

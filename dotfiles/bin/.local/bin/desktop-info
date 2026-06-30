@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+desktop="${1:?desktop file required}"
+
+[[ -f "$desktop" ]] || exit 1
+
+read_key() {
+  local key="$1"
+
+  grep -m1 "^${key}=" "$desktop" |
+    cut -d= -f2- || true
+}
+
+printf 'NAME=%s\n' "$(read_key Name)"
+printf 'EXEC=%s\n' "$(read_key Exec)"
+printf 'TERMINAL=%s\n' "$(read_key Terminal)"
+printf 'ICON=%s\n' "$(read_key Icon)"

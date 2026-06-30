@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+file="${1:-}"
+
+if [[ ! -n "$file" ]]; then
+  echo "filename required"
+  exit 2
+fi
+
+if [[ ! -e "$file" ]]; then
+  echo "file/directory not found"
+  exit 1
+fi
+
+mime="$(xdg-mime query filetype "$file")"
+
+case "$mime" in
+  text/*)
+    TUI_TITLE="Editor" tui-run nvim "$file"
+    ;;
+
+  inode/directory)
+    TUI_TITLE="Yazi" tui-run yazi "$file"
+    ;;
+
+  application/pdf)
+    xdg-open "$file"
+    ;;
+
+  image/*)
+    xdg-open "$file"
+    ;;
+
+  video/*|audio/*)
+    xdg-open "$file"
+    ;;
+
+  *)
+    xdg-open "$file"
+    ;;
+esac

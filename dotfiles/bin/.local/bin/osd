@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+VN_LIB="${VOID_NEON_LIB:-$HOME/.local/lib/void-neon}"
+
+source "$VN_LIB/logging.sh"
+source "$VN_LIB/commands.sh"
+source "$VN_LIB/notify.sh"
+
 title="${1:-OSD}"
 value="${2:-0}"
 icon="${3:-}"

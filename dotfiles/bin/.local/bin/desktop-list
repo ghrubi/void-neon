@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+app_dirs=()
+
+[[ -d /usr/share/applications ]] && app_dirs+=("/usr/share/applications")
+[[ -d "$HOME/.local/share/applications" ]] && app_dirs+=("$HOME/.local/share/applications")
+
+[[ ${#app_dirs[@]} -gt 0 ]] || exit 1
+
+find "${app_dirs[@]}" -name '*.desktop' 2>/dev/null |
+while read -r desktop; do
+  name="$(grep -m1 '^Name=' "$desktop" | cut -d= -f2- || true)"
+  hidden="$(grep -m1 '^NoDisplay=' "$desktop" | cut -d= -f2- || true)"
+
+  [[ -n "$name" ]] || continue
+  [[ "$hidden" == "true" ]] && continue
+
+  printf '%s\t%s\n' "$name" "$desktop"
+done | sort -u

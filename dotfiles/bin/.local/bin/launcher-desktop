@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+desktop="${1:?desktop file required}"
+
+[[ -f "$desktop" ]] || exit 1
+
+name="$(desktop-info "$desktop" | awk -F= '$1 == "NAME" { print substr($0, index($0, "=") + 1) }')"
+exec_cmd="$(desktop-info "$desktop" | awk -F= '$1 == "EXEC" { print substr($0, index($0, "=") + 1) }')"
+terminal="$(desktop-info "$desktop" | awk -F= '$1 == "TERMINAL" { print tolower($2) }')"
+
+[[ -n "$exec_cmd" ]] || exit 1
+
+exec_cmd="$(
+  printf '%s\n' "$exec_cmd" |
+    sed \
+      -e 's/ %[fFuUdDnNickvm]//g' \
+      -e 's/%%/%/g'
+)"
+
+if [[ "$terminal" == "true" ]]; then
+  exec tui-run "$exec_cmd"
+else
+  exec gtk-launch "$(basename "$desktop" .desktop)"
+fi

@@ -135,6 +135,7 @@ window#waybar {
 }
 
 #custom-powerprofile {
+    font-size: 10pt;
     color: #00e5ff;
     padding-right: 6px;
     min-height: 0;
