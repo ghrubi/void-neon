@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+state_dir="${XDG_STATE_HOME:-$HOME/.local/state}/void-neon"
+state_file="$state_dir/hardware-state.env"
+
+mkdir -p "$state_dir"
+
+save() {
+  {
+    printf 'VOLUME=%q\n' "$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print int($2 * 100)}')"
+    printf 'BRIGHTNESS=%q\n' "$(brightnessctl -m | cut -d, -f4 | tr -d '%')"
+
+    if brightnessctl --device='*kbd_backlight*' info >/dev/null 2>&1; then
+      printf 'KBD_BRIGHTNESS=%q\n' "$(brightnessctl --device='*kbd_backlight*' -m | cut -d, -f4 | tr -d '%')"
+    fi
+  } > "$state_file"
+}
+
+restore() {
+  [[ -f "$state_file" ]] || exit 0
+  # shellcheck disable=SC1090
+  source "$state_file"
+
+  [[ -n "${VOLUME:-}" ]] && wpctl set-volume @DEFAULT_AUDIO_SINK@ "${VOLUME}%"
+  [[ -n "${BRIGHTNESS:-}" ]] && brightnessctl set "${BRIGHTNESS}%"
+
+  if [[ -n "${KBD_BRIGHTNESS:-}" ]] && brightnessctl --device='*kbd_backlight*' info >/dev/null 2>&1; then
+    brightnessctl --device='*kbd_backlight*' set "${KBD_BRIGHTNESS}%"
+  fi
+}
+
+case "${1:-}" in
+  save) save ;;
+  restore) restore ;;
+  *) echo "usage: hardware-state save|restore" >&2; exit 2 ;;
+esac

@@ -5,3 +5,4 @@ brightnessctl -d 'smc::kbd_backlight' set +10% >/dev/null
 value="$(brightnessctl -d 'smc::kbd_backlight' -m | cut -d, -f4 | tr -d '%')"
 
 osd "Keyboard" "$value" "⌨"
+hardware-state save

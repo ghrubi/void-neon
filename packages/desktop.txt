@@ -33,3 +33,4 @@ lightdm
 lightdm-gtk-greeter
 udisks2
 github-cli
+imv

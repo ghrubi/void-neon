@@ -10,3 +10,5 @@ else
   value="$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print int($2 * 100)}')"
   osd "Volume" "$value" ""
 fi
+
+hardware-state save

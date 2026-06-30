@@ -5,3 +5,4 @@ brightnessctl -d intel_backlight set +5% >/dev/null
 value="$(brightnessctl -d intel_backlight -m | cut -d, -f4 | tr -d '%')"
 
 osd "Brightness" "$value" "☀"
+hardware-state save
