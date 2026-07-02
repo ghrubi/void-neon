@@ -57,10 +57,10 @@ Rectangle {
 
     Column {
         id: loginBox
-        width: 320
+        width: 220 // 320
         spacing: 20
         anchors.centerIn: parent
-        anchors.verticalCenterOffset: -60
+        // anchors.verticalCenterOffset: -60
 
         Text {
             text: "Void Neon"
@@ -83,11 +83,11 @@ Rectangle {
 
         Rectangle {
             width: parent.width
-            height: 38
+            height: 36 // 38
             radius: height / 2
             color: "#000000"
             border.color: password.activeFocus ? root.accent : root.mutedColor
-            border.width: 2
+            border.width: 1 // 2
 
             TextInput {
                 id: password
@@ -97,13 +97,19 @@ Rectangle {
                 color: root.textColor
                 echoMode: TextInput.Password
                 font.family: "Inter"
-                font.pixelSize: 17
+                font.pixelSize: 10 // is 8pt equiv. // 17
                 verticalAlignment: TextInput.AlignVCenter
+                horizontalAlignment: TextInput.AlignHCenter
                 focus: true
+		cursorVisible: false
 
                 Keys.onReturnPressed: root.login()
                 Keys.onEnterPressed: root.login()
                 Keys.onEscapePressed: password.text = ""
+		cursorDelegate: Rectangle {
+                    width: 0
+                    visible: false
+                }
             }
         }
 
@@ -112,7 +118,7 @@ Rectangle {
             text: ""
             color: root.errorColor
             font.family: "Inter"
-            font.pixelSize: 13
+            font.pixelSize: 8 // 13
             horizontalAlignment: Text.AlignHCenter
             width: parent.width
         }
