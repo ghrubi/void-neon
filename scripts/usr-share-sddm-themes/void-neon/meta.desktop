@@ -1,0 +1,14 @@
+[SddmGreeterTheme]
+Name=Void Neon
+Description=Void Neon SDDM theme
+Author=Gene Hrubi
+Type=sddm-theme
+Version=1.0
+Website=https://github.com/ghrubi/void-neon
+Screenshot=
+MainScript=Main.qml
+ConfigFile=theme.conf
+TranslationsDirectory=translations
+Email=
+Theme-Id=void-neon
+Theme-API=2.0

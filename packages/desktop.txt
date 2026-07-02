@@ -1,6 +1,10 @@
-hyprland
+dbus
+polkit
+elogind
+sddm
 xdg-desktop-portal
 xdg-desktop-portal-hyprland
+hyprland
 Waybar
 mako
 hyprpaper
@@ -29,8 +33,6 @@ playerctl
 alsa-pipewire
 fastfetch
 gnome-keyring
-lightdm
-lightdm-gtk-greeter
 udisks2
 github-cli
 imv
