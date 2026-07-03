@@ -1,38 +1,35 @@
-dbus
-polkit
-elogind
+# --- Login ----
 sddm
+
+# --- Hyprland ----
 xdg-desktop-portal
 xdg-desktop-portal-hyprland
 hyprland
+hyprlock
+hypridle
+
+# --- Desktop ----
 Waybar
 mako
 hyprpaper
-hyprlock
-hypridle
 hyprshot
 hyprlauncher
-hyprshade
 hyprshutdown
+hyprshade
 hyprsunset
+
+# --- Desktop Utils ----
 fuzzel
+wl-clipboard
 cliphist
-brightnessctl
-chromium
-NetworkManager
-blueman
-bluetui
-bluez
 wireplumber
 wireplumber-elogind
 pipewire
-power-profiles-daemon
-seatd
-brightnessctl
-playerctl
 alsa-pipewire
 fastfetch
 gnome-keyring
 udisks2
-github-cli
-imv
+
+# ---- Controls ----
+brightnessctl
+

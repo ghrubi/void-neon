@@ -1,0 +1,16 @@
+# ----Editors ----
+neovim
+
+# ---- Browsers ----
+chromium
+firefox
+
+# ---- Documents ----
+zathura
+libreoffice
+# only office
+
+# ---- Utils ----
+unzip
+imv
+

@@ -11,6 +11,7 @@ Rectangle {
     property string textColor: "#e6faff"
     property string mutedColor: "#6f7f86"
     property string errorColor: "#ff4d6d"
+    property bool loginFailed: false
 
     function currentUser() {
         if (userModel.lastUser && userModel.lastUser.length > 0) {
@@ -25,7 +26,7 @@ Rectangle {
     }
 
     function login() {
-        errorText.text = ""
+        root.loginFailed = false
         sddm.login(currentUser(), password.text, 0)
     }
 
@@ -37,7 +38,7 @@ Rectangle {
         target: sddm
 
         function onLoginFailed() {
-            errorText.text = "Authentication failed"
+            root.loginFailed = true
             password.text = ""
             password.forceActiveFocus()
         }
@@ -60,7 +61,6 @@ Rectangle {
         width: 220 // 320
         spacing: 20
         anchors.centerIn: parent
-        // anchors.verticalCenterOffset: -60
 
         Text {
             text: "Void Neon"
@@ -82,12 +82,23 @@ Rectangle {
         }
 
         Rectangle {
+            id: passwordBox
             width: parent.width
-            height: 36 // 38
+            height: 36
             radius: height / 2
             color: "#000000"
-            border.color: password.activeFocus ? root.accent : root.mutedColor
-            border.width: 1 // 2
+            border.width: 1
+            border.color: root.loginFailed
+                ? root.errorColor
+                : password.activeFocus
+                    ? root.accent
+                    : root.mutedColor
+
+            Behavior on border.color {
+                ColorAnimation {
+                    duration: 120
+                }
+            }
 
             TextInput {
                 id: password
@@ -97,30 +108,53 @@ Rectangle {
                 color: root.textColor
                 echoMode: TextInput.Password
                 font.family: "Inter"
-                font.pixelSize: 10 // is 8pt equiv. // 17
-                verticalAlignment: TextInput.AlignVCenter
+                font.pixelSize: 10 // 8pt equiv.
                 horizontalAlignment: TextInput.AlignHCenter
+                verticalAlignment: TextInput.AlignVCenter
                 focus: true
-		cursorVisible: false
+                visible: !root.loginFailed
+
+                cursorDelegate: Rectangle {
+                    width: 0
+                    visible: false
+                }
+
+                onTextChanged: {
+                    if (root.loginFailed) {
+                        root.loginFailed = false
+                    }
+                }
 
                 Keys.onReturnPressed: root.login()
                 Keys.onEnterPressed: root.login()
                 Keys.onEscapePressed: password.text = ""
-		cursorDelegate: Rectangle {
-                    width: 0
-                    visible: false
+            }
+
+            Text {
+                anchors.centerIn: parent
+                visible: root.loginFailed
+                text: "Authentication failed"
+                color: root.errorColor
+                font.family: "Inter"
+                font.pixelSize: 10 // 8pt equiv.
+                font.italic: true
+            }
+
+            Timer {
+                id: errorTimer
+                interval: 1400
+                repeat: false
+                onTriggered: {
+                    root.loginFailed = false
+                    password.forceActiveFocus()
                 }
             }
         }
+    }
 
-        Text {
-            id: errorText
-            text: ""
-            color: root.errorColor
-            font.family: "Inter"
-            font.pixelSize: 8 // 13
-            horizontalAlignment: Text.AlignHCenter
-            width: parent.width
+    onLoginFailedChanged: {
+        if (loginFailed) {
+            errorTimer.restart()
         }
     }
 

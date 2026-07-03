@@ -1,0 +1,30 @@
+# ---- Shell ----
+bash
+zsh
+starship
+zoxide
+fzf
+
+# ---- Core CLI ----
+git
+github-cli
+curl
+wget
+stow
+rsync
+
+# ---- Core TUIs ----
+btop
+nmtui
+bluetui
+pulsemixer
+
+# ---- System ----
+dbus
+elogind
+seatd
+polkit
+xdg-utils
+NetworkManager
+bluez
+power-profiles-daemon

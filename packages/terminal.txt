@@ -1,22 +1,20 @@
-zsh
-starship
+# ---- Terminals ----
 ghostty
+
+# ---- Enhancements ----
 eza
-fzf
-zoxide
 fd
 ripgrep
 bat
 jq
 yq
-lazygit
-btop
-yazi
 xh
 dust
 duf
-tldr
-stow
-git
 lsof
+
+# ---- Utils ----
+yazi
+lazygit
 tmux
+tldr
