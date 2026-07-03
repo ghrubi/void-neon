@@ -2,36 +2,171 @@
 set -euo pipefail
 
 state_dir="${XDG_STATE_HOME:-$HOME/.local/state}/void-neon"
-state_file="$state_dir/hardware-state.env"
+ac_state_file="$state_dir/hardware-ac.env"
+battery_state_file="$state_dir/hardware-battery.env"
 
 mkdir -p "$state_dir"
 
-save() {
-  {
-    printf 'VOLUME=%q\n' "$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print int($2 * 100)}')"
-    printf 'BRIGHTNESS=%q\n' "$(brightnessctl -m | cut -d, -f4 | tr -d '%')"
+power_source() {
+  local supply type online
 
-    if brightnessctl --device='*kbd_backlight*' info >/dev/null 2>&1; then
-      printf 'KBD_BRIGHTNESS=%q\n' "$(brightnessctl --device='*kbd_backlight*' -m | cut -d, -f4 | tr -d '%')"
-    fi
-  } > "$state_file"
+  for supply in /sys/class/power_supply/*; do
+    [[ -d "$supply" ]] || continue
+    [[ -r "$supply/type" ]] || continue
+
+    type="$(cat "$supply/type")"
+
+    case "$type" in
+      Mains|USB|USB_C|USB_PD)
+        online="$supply/online"
+        if [[ -r "$online" && "$(cat "$online")" == "1" ]]; then
+          printf 'ac\n'
+          return
+        fi
+        ;;
+    esac
+  done
+
+  printf 'battery\n'
 }
 
-restore() {
-  [[ -f "$state_file" ]] || exit 0
+state_file_for_power() {
+  case "${1:?power source required}" in
+    ac) printf '%s\n' "$ac_state_file" ;;
+    battery) printf '%s\n' "$battery_state_file" ;;
+    *) exit 2 ;;
+  esac
+}
+
+state_file_for_current_power() {
+  state_file_for_power "$(power_source)"
+}
+
+get_volume() {
+  wpctl get-volume @DEFAULT_AUDIO_SINK@ |
+    awk '{ print int($2 * 100) }'
+}
+
+get_screen_brightness() {
+  brightnessctl -m |
+    cut -d, -f4 |
+    tr -d '%'
+}
+
+kbd_device() {
+  brightnessctl --list 2>/dev/null |
+    awk -F"'" '/kbd_backlight/ { print $2; exit }'
+}
+
+get_keyboard_brightness() {
+  local dev
+  dev="$(kbd_device)"
+
+  [[ -n "$dev" ]] || return 0
+
+  brightnessctl --device="$dev" -m |
+    cut -d, -f4 |
+    tr -d '%'
+}
+
+set_keyboard_brightness() {
+  local value="${1:?value required}"
+  local dev
+
+  dev="$(kbd_device)"
+  [[ -n "$dev" ]] || return 0
+
+  brightnessctl --device="$dev" set "${value}%"
+}
+
+get_power_profile() {
+  powerprofilesctl get
+}
+
+set_power_profile() {
+  local profile="${1:?profile required}"
+  local user="${VOID_NEON_USER:-gene}"
+  # powerprofilesctl set "$profile"
+  sudo -u "$user" powerprofilesctl set "$profile"
+}
+
+save() {
+  local source file kbd
+
+  source="$(power_source)"
+  file="$(state_file_for_power "$source")"
+  kbd="$(get_keyboard_brightness || true)"
+  power_profile="$(get_power_profile || true)"
+
+  {
+    printf 'VOLUME=%q\n' "$(get_volume)"
+    printf 'BRIGHTNESS=%q\n' "$(get_screen_brightness)"
+
+    [[ -n "$kbd" ]] && printf 'KBD_BRIGHTNESS=%q\n' "$kbd"
+    [[ -n "$power_profile" ]] && printf 'POWER_PROFILE=%q\n' "$power_profile"
+  } > "$file"
+}
+
+restore_file() {
+  local file="${1:?state file required}"
+  local restore_volume="${2:-yes}"
+
+  [[ -f "$file" ]] || exit 0
+
   # shellcheck disable=SC1090
-  source "$state_file"
+  source "$file"
 
-  [[ -n "${VOLUME:-}" ]] && wpctl set-volume @DEFAULT_AUDIO_SINK@ "${VOLUME}%"
-  [[ -n "${BRIGHTNESS:-}" ]] && brightnessctl set "${BRIGHTNESS}%"
+  if [[ "$restore_volume" == "yes" && -n "${VOLUME:-}" ]]; then
+    wpctl set-volume @DEFAULT_AUDIO_SINK@ "${VOLUME}%"
+  fi
 
-  if [[ -n "${KBD_BRIGHTNESS:-}" ]] && brightnessctl --device='*kbd_backlight*' info >/dev/null 2>&1; then
-    brightnessctl --device='*kbd_backlight*' set "${KBD_BRIGHTNESS}%"
+  if [[ -n "${BRIGHTNESS:-}" ]]; then
+    brightnessctl set "${BRIGHTNESS}%"
+  fi
+
+  if [[ -n "${KBD_BRIGHTNESS:-}" ]]; then
+    set_keyboard_brightness "$KBD_BRIGHTNESS"
+  fi
+
+  if [[ -n "${POWER_PROFILE:-}" ]]; then
+    set_power_profile "$POWER_PROFILE"
   fi
 }
 
+restore_current() {
+  restore_file "$(state_file_for_current_power)" yes
+}
+
+power_event() {
+  # Tiny delay lets sysfs settle after plug/unplug.
+  sleep 0.5
+  # restore_current
+  restore_file "$(state_file_for_current_power)" no
+}
+
 case "${1:-}" in
-  save) save ;;
-  restore) restore ;;
-  *) echo "usage: hardware-state save|restore" >&2; exit 2 ;;
+  save)
+    save
+    ;;
+
+  restore)
+    restore_current
+    ;;
+
+  restore-current)
+    restore_current
+    ;;
+
+  power-event)
+    power_event
+    ;;
+
+  power-source)
+    power_source
+    ;;
+
+  *)
+    printf 'usage: hardware-state save|restore|restore-current|power-event|power-source\n' >&2
+    exit 2
+    ;;
 esac

@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+user="${VOID_NEON_USER:-gene}"
+home_dir="$(getent passwd "$user" | cut -d: -f6)"
+uid="$(id -u "$user")"
+
+
+[[ -n "$home_dir" ]] || exit 0
+[[ -d "/run/user/$uid" ]] || exit 0
+[[ -x "$home_dir/.local/bin/hardware-state" ]] || exit 0
+
+sudo -u "$user" env \
+  HOME="$home_dir" \
+  XDG_RUNTIME_DIR="/run/user/$uid" \
+  "$home_dir/.local/bin/hardware-state" power-event

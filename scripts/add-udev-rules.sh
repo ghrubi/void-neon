@@ -3,14 +3,17 @@ set -euo pipefail
 
 RULES_DIR=/etc/udev/rules.d
 
-sudo mkdir -p $RULES_DIR
-BACKLIGHT_RULES_FILE="$RULES_DIR/90-backlight.rules"
-
 sudo mkdir -p "$RULES_DIR"
+BACKLIGHT_RULES_FILE="$RULES_DIR/90-backlight.rules"
+POWER_RULES_FILE="$RULES_DIR/90-void-neon-power.rules"
 
 sudo tee "$BACKLIGHT_RULES_FILE" >/dev/null <<'EOF'
 ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="intel_backlight", GROUP="video", MODE="0664"
 ACTION=="add", SUBSYSTEM=="leds", KERNEL=="smc::kbd_backlight", GROUP="video", MODE="0664"
+EOF
+
+sudo tee "$POWER_RULES_FILE" >/dev/null <<'EOF'
+SUBSYSTEM=="power_supply", ACTION=="change", RUN+="/usr/local/bin/void-neon-power-event"
 EOF
 
 sudo udevadm control --reload-rules

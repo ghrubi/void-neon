@@ -29,4 +29,5 @@ esac
 powerprofilesctl set "$next"
 pkill -RTMIN+8 waybar
 osd "Power" "$power_pct" "$power_icon"
+hardware-state save
 
