@@ -43,8 +43,16 @@ state_file_for_current_power() {
 }
 
 get_volume() {
-  wpctl get-volume @DEFAULT_AUDIO_SINK@ |
-    awk '{ print int($2 * 100) }'
+  local value
+
+  value="$(
+    wpctl get-volume @DEFAULT_AUDIO_SINK@ 2>/dev/null |
+      awk '{ print int($2 * 100) }'
+  )" || return 1
+
+  [[ "$value" =~ ^[0-9]+$ ]] || return 1
+
+  printf '%s\n' "$value"
 }
 
 get_screen_brightness() {
@@ -95,15 +103,18 @@ save() {
 
   source="$(power_source)"
   file="$(state_file_for_power "$source")"
+  brightness="$(get_screen_brightness || true)"
   kbd="$(get_keyboard_brightness || true)"
   power_profile="$(get_power_profile || true)"
 
   {
-    printf 'VOLUME=%q\n' "$(get_volume)"
-    printf 'BRIGHTNESS=%q\n' "$(get_screen_brightness)"
-
+    [[ -n "$brightness" ]] && printf 'BRIGHTNESS=%q\n' "$brightness"
     [[ -n "$kbd" ]] && printf 'KBD_BRIGHTNESS=%q\n' "$kbd"
     [[ -n "$power_profile" ]] && printf 'POWER_PROFILE=%q\n' "$power_profile"
+
+    if volume="$(get_volume)"; then
+      printf 'VOLUME=%q\n' "$volume"
+    fi
   } > "$file"
 }
 
@@ -150,10 +161,6 @@ case "${1:-}" in
     ;;
 
   restore)
-    restore_current
-    ;;
-
-  restore-current)
     restore_current
     ;;
 

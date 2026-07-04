@@ -1,0 +1,8 @@
+# --- Login ----
+sddm
+
+# ---- System ----
+seatd
+
+# ---- Power ----
+power-profiles-daemon

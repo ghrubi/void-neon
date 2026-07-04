@@ -1,35 +1,38 @@
-# --- Login ----
-sddm
-
 # --- Hyprland ----
-xdg-desktop-portal
-xdg-desktop-portal-hyprland
 hyprland
 hyprlock
 hypridle
+xdg-desktop-portal
+xdg-desktop-portal-hyprland
 
-# --- Desktop ----
+# --- Desktop core ----
 Waybar
 mako
 hyprpaper
+fuzzel
+
+# ---- Clipboard ----
+wl-clipboard
+cliphist
+
+# ---- Audio ----
+pipewire
+wireplumber
+wireplumber-elogind
+alsa-pipewire
+
+# ---- Hardware controls ----
+brightnessctl
+
+# --- Desktop utilities ----
+fastfetch
+gnome-keyring
+udisks2
+
+# ---- Optional Hypr ecosystem ----
 hyprshot
 hyprlauncher
 hyprshutdown
 hyprshade
 hyprsunset
-
-# --- Desktop Utils ----
-fuzzel
-wl-clipboard
-cliphist
-wireplumber
-wireplumber-elogind
-pipewire
-alsa-pipewire
-fastfetch
-gnome-keyring
-udisks2
-
-# ---- Controls ----
-brightnessctl
 

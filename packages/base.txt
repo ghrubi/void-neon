@@ -20,11 +20,6 @@ bluetui
 pulsemixer
 
 # ---- System ----
-dbus
-elogind
-seatd
 polkit
 xdg-utils
-NetworkManager
-bluez
 power-profiles-daemon
