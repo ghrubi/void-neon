@@ -94,8 +94,11 @@ get_power_profile() {
 set_power_profile() {
   local profile="${1:?profile required}"
   local user="${VOID_NEON_USER:-gene}"
-  # powerprofilesctl set "$profile"
-  sudo -u "$user" powerprofilesctl set "$profile"
+  echo "In set_power_profile before original" >> /tmp/hardware-save.log
+  # powerprofilesctl set "$profile" >> /tmp/hardware-save.log 2>&1
+
+  echo "In set_power_profile" >> /tmp/hardware-save.log
+  sudo -u "$user" powerprofilesctl set "$profile" >> /tmp/hardware-save.log 2>&1
 }
 
 save() {
@@ -127,20 +130,26 @@ restore_file() {
   # shellcheck disable=SC1090
   source "$file"
 
+  echo "restore_file: If restore_volume" >> /tmp/hardware-save.log
   if [[ "$restore_volume" == "yes" && -n "${VOLUME:-}" ]]; then
     wpctl set-volume @DEFAULT_AUDIO_SINK@ "${VOLUME}%"
   fi
 
+  echo "restore_file: If brightness" >> /tmp/hardware-save.log
   if [[ -n "${BRIGHTNESS:-}" ]]; then
     brightnessctl set "${BRIGHTNESS}%"
   fi
 
+  echo "restore_file: If kbd_brightness" >> /tmp/hardware-save.log
   if [[ -n "${KBD_BRIGHTNESS:-}" ]]; then
     set_keyboard_brightness "$KBD_BRIGHTNESS"
   fi
 
+  echo "restore_file: If power_profile" >> /tmp/hardware-save.log
   if [[ -n "${POWER_PROFILE:-}" ]]; then
+    echo "restore_file: Before set_power_profile" >> /tmp/hardware-save.log
     set_power_profile "$POWER_PROFILE"
+    echo "restore_file: After set_power_profile" >> /tmp/hardware-save.log
   fi
 }
 
@@ -148,11 +157,22 @@ restore_current() {
   restore_file "$(state_file_for_current_power)" yes
 }
 
+refresh_waybar() {
+    local cmd="$HOME/.local/bin/waybar-refresh"
+
+    [[ -x "$cmd" ]] || return 0
+
+    "$cmd"
+}
+
 power_event() {
   # Tiny delay lets sysfs settle after plug/unplug.
   sleep 0.5
   # restore_current
   restore_file "$(state_file_for_current_power)" no
+  sleep 0.5
+  # refresh_waybar
+  refresh_waybar >> /tmp/hardware-save.log 2>&1
 }
 
 case "${1:-}" in
@@ -165,6 +185,8 @@ case "${1:-}" in
     ;;
 
   power-event)
+    echo "PATH=[$PATH]" >> /tmp/hardware-save.log
+    echo "HOME=[$HOME]" >> /tmp/hardware-save.log
     power_event
     ;;
 

@@ -10,6 +10,7 @@ export SYSTEM_DIR="$REPO_ROOT/system"
 export SERVICES_DIR="$REPO_ROOT/services"
 export SCRIPTS_DIR="$REPO_ROOT/scripts"
 export WALLPAPERS_DIR="$REPO_ROOT/wallpapers"
+export VOID_NEON_USER="${VOID_NEON_USER:-${SUDO_USER:-$USER}}"
 
 source "$SCRIPTS_DIR/lib.sh"
 source "$SCRIPTS_DIR/packages.sh"

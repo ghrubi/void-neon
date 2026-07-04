@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+pkill -RTMIN+8 waybar 2>/dev/null || true

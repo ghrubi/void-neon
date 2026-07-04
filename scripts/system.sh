@@ -21,6 +21,10 @@ install_system_files() {
     "$SYSTEM_DIR/etc-sddm.conf.d/10-void-neon.conf" \
     /etc/sddm.conf.d/10-void-neon.conf
 
+  install_file \
+    "$SYSTEM_DIR/etc-polkit-1-rules.d/49-void-neon-power-profiles.rules" \
+    /etc/polkit-1/rules.d/49-void-neon-power-profiles.rules
+
   "$SYSTEM_DIR/add-udev-rules.sh"
 }
 
@@ -51,3 +55,23 @@ install_system_files() {
 #
 # sudo chown root:root /etc/sddm.conf.d/10-void-neon.conf
 # sudo chmod 644 /etc/sddm.conf.d/10-void-neon.conf
+
+install_power_profile_polkit_rule() {
+    # local user="${VOID_NEON_USER:-${SUDO_USER:-$USER}}"
+    local dst="/etc/polkit-1/rules.d/49-void-neon-power-profiles.rules"
+
+    sudo install -d -m 755 /etc/polkit-1/rules.d
+
+    sudo tee "$dst" >/dev/null <<EOF
+polkit.addRule(function(action, subject) {
+    if (
+        action.id == "org.freedesktop.UPower.PowerProfiles.switch-profile" &&
+        subject.user == "$user"
+    ) {
+        return polkit.Result.YES;
+    }
+});
+EOF
+
+    sudo chmod 644 "$dst"
+}
