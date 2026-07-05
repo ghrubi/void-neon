@@ -24,26 +24,34 @@ source "$SCRIPTS_DIR/post_install.sh"
 source "$SCRIPTS_DIR/verify.sh"
 source "$SCRIPTS_DIR/finish.sh"
 
+log "Beginning preflight..."
 preflight
 
 # detect_host
 
+log "Installing repositories..."
 install_repositories
 
+log "Installing packages..."
 install_package_sets base terminal fonts desktop apps medibase terminal fonts desktop apps media
 
+log "Enabling services..."
 enable_service_sets base desktop
 
 # if manifest_exists "$SERVICES_DIR/hosts/$HOST_PROFILE.txt"; then
 #     enable_service_file "$SERVICES_DIR/hosts/$HOST_PROFILE.txt"
 # fi
 
+log "Installing system files..."
 install_system_files
 
+log "Installing dotfiles..."
 install_dotfiles
 
+log "Running post-install..."
 post_install
 
+log "Verifying installation..."
 verify
 
 finish

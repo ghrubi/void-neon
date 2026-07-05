@@ -1,3 +1,8 @@
+# Easy logging
+log() {
+    printf '\n==> %s\n' "$*"
+}
+
 # Install files in non-user space
 install_file() {
     local src="${1:?}"
@@ -17,6 +22,7 @@ install_tree() {
     sudo cp -a "$src"/. "$dst"/
 }
 
+# Parse out comments and return
 read_manifest() {
     local file="${1:?manifest file required}"
     local -n result="${2:?array variable required}"
@@ -36,6 +42,7 @@ read_manifest() {
     )
 }
 
+# File exists?
 manifest_exists() {
     [[ -f "${1:?}" ]]
 }
