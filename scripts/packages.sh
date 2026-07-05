@@ -1,6 +1,3 @@
-#!/usr/bin/env bash
-set -euo pipefail
-
 install_package_sets() {
   local set
   for set in "$@"; do

@@ -1,6 +1,3 @@
-#!/usr/bin/env bash
-set -euo pipefail
-
 install_system_files() {
   install_file \
     "$SYSTEM_DIR/usr-local-bin/void-neon-power-event" \

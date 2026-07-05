@@ -170,9 +170,6 @@ power_event() {
   sleep 0.5
   # restore_current
   restore_file "$(state_file_for_current_power)" no
-  sleep 0.5
-  # refresh_waybar
-  refresh_waybar >> /tmp/hardware-save.log 2>&1
 }
 
 case "${1:-}" in
@@ -182,12 +179,16 @@ case "${1:-}" in
 
   restore)
     restore_current
+    sleep 0.5
+    # refresh_waybar
+    refresh_waybar >> /tmp/hardware-save.log 2>&1
     ;;
 
   power-event)
-    echo "PATH=[$PATH]" >> /tmp/hardware-save.log
-    echo "HOME=[$HOME]" >> /tmp/hardware-save.log
     power_event
+    sleep 0.5
+    # refresh_waybar
+    refresh_waybar >> /tmp/hardware-save.log 2>&1
     ;;
 
   power-source)

@@ -13,16 +13,22 @@ export WALLPAPERS_DIR="$REPO_ROOT/wallpapers"
 export VOID_NEON_USER="${VOID_NEON_USER:-${SUDO_USER:-$USER}}"
 
 source "$SCRIPTS_DIR/lib.sh"
+source "$SCRIPTS_DIR/preflight.sh"
+source "$SCRIPTS_DIR/hosts.sh"
+source "$SCRIPTS_DIR/repositories.sh"
 source "$SCRIPTS_DIR/packages.sh"
 source "$SCRIPTS_DIR/services.sh"
-source "$SCRIPTS_DIR/dotfiles.sh"
 source "$SCRIPTS_DIR/system.sh"
-source "$SCRIPTS_DIR/hosts.sh"
+source "$SCRIPTS_DIR/dotfiles.sh"
+source "$SCRIPTS_DIR/post_install.sh"
 source "$SCRIPTS_DIR/verify.sh"
+source "$SCRIPTS_DIR/finish.sh"
 
 preflight
 
-detect_host
+# detect_host
+
+install_repositories
 
 install_package_sets base terminal fonts desktop apps medibase terminal fonts desktop apps media
 

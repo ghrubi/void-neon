@@ -2,9 +2,6 @@ install_dotfiles() {
     (
         cd "$DOTFILES_DIR"
 
-        stow \
-            --target="$HOME" \
-            --restow \
-            .
+        stow --target="$HOME" --restow .
     )
 }
