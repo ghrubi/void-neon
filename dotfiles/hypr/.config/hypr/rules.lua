@@ -1,7 +1,7 @@
 -- Nice fixed size
-local fixed_width = "1000"
-local fixed_height = "760"
-local fixed_opacity = "0.8 0.7"
+local standard_width = "1000"
+local standard_height = "760"
+local standard_opacity = "0.8 0.7"
 
 -- Yazi
 hl.window_rule({
@@ -10,8 +10,8 @@ hl.window_rule({
   },
   float = true,
   center = true,
-  size = {fixed_width, fixed_height },
-  opacity = fixed_opacity,
+  size = {standard_width, standard_height },
+  opacity = standard_opacity,
 })
 
 -- Lazygit
@@ -21,8 +21,8 @@ hl.window_rule({
   },
   float = true,
   center = true,
-  size = {fixed_width, fixed_height },
-  opacity = fixed_opacity,
+  size = {standard_width, standard_height },
+  opacity = standard_opacity,
 })
 
 -- Pulsemixer
@@ -32,8 +32,8 @@ hl.window_rule({
   },
   float = true,
   center = true,
-  size = {fixed_width, fixed_height },
-  opacity = fixed_opacity,
+  size = {standard_width, standard_height },
+  opacity = standard_opacity,
 })
 
 -- Bluetui
@@ -43,8 +43,8 @@ hl.window_rule({
   },
   float = true,
   center = true,
-  size = {fixed_width, fixed_height },
-  opacity = fixed_opacity,
+  size = {standard_width, standard_height },
+  opacity = standard_opacity,
 })
 
 -- Nmtui
@@ -54,7 +54,7 @@ hl.window_rule({
   },
   float = true,
   center = true,
-  size = {fixed_width, fixed_height },
-  opacity = fixed_opacity,
+  size = {standard_width, standard_height },
+  opacity = standard_opacity,
 })
 
