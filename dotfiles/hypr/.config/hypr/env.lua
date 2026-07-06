@@ -1,0 +1,17 @@
+hl.env("XDG_CURRENT_DESKTOP", "Hyprland")
+hl.env("XDG_SESSION_DESKTOP", "Hyprland")
+hl.env("XDG_SESSION_TYPE", "wayland")
+hl.env("QT_QPA_PLATFORM", "wayland")
+hl.env("GDK_BACKEND", "wayland")
+hl.env("MOZ_ENABLE_WAYLAND", "1")
+hl.env("XCURSOR_THEME", "Adwaita")
+-- hl.env("XCURSOR_SIZE", "10")
+-- hl.env("HYPRCURSOR_THEME","Adwaita")
+-- hl.env("HYPRCURSOR_SIZE","10")
+
+local current_path = os.getenv("PATH")
+local add_bin_path = os.getenv("HOME") .. "/.local/bin"
+hl.env("PATH", current_path .. ":" .. add_bin_path)
+hl.env("EDITOR", "nvim")
+hl.env("TERMINAL", "ghostty")
+hl.env("BROWSER", "chromium")
