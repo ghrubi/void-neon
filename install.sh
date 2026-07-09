@@ -20,7 +20,7 @@ source "$SCRIPTS_DIR/packages.sh"
 source "$SCRIPTS_DIR/services.sh"
 source "$SCRIPTS_DIR/system.sh"
 source "$SCRIPTS_DIR/dotfiles.sh"
-source "$SCRIPTS_DIR/post_install.sh"
+source "$SCRIPTS_DIR/post-install.sh"
 source "$SCRIPTS_DIR/verify.sh"
 source "$SCRIPTS_DIR/finish.sh"
 
