@@ -15,7 +15,6 @@ rsync
 
 # ---- Core TUIs ----
 btop
-nmtui
 bluetui
 pulsemixer
 
@@ -23,3 +22,4 @@ pulsemixer
 polkit
 xdg-utils
 power-profiles-daemon
+NetworkManager
