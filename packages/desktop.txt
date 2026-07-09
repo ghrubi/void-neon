@@ -1,3 +1,7 @@
+# --- Login ---
+sddm
+elogind
+
 # --- Hyprland ----
 hyprland
 hyprlock
