@@ -22,14 +22,11 @@ local services = {
 
 local restore_state = {
     -- Restore hardware state
-    -- "sleep 3; hardware-state restore",
     "hardware-state restore",
 }
 
 local apps = {
     -- Autostart apps
-    -- "sleep 3;" .. terminal,
-    -- "sleep 4;" .. terminal,
     terminal,
     terminal,
 }

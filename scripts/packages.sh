@@ -5,7 +5,7 @@ install_package_sets() {
   done
 }
 
-install_package_file() {
+install_package_file_original() {
   local file="${1:?file required}"
   local packages=()
 
@@ -15,6 +15,29 @@ install_package_file() {
 
   [[ ${#packages[@]} -gt 0 ]] || return 0
 
-  sudo xbps-install -S --needed "${packages[@]}""
+  sudo xbps-install -S "${packages[@]}"
+}
+
+install_package_file() {
+    local file="${1:?file required}"
+    local packages=()
+    local missing=()
+    local pkg
+
+    read_manifest "$file" packages
+
+    [[ ${#packages[@]} -gt 0 ]] || return 0
+
+    for pkg in "${packages[@]}"; do
+        if xbps-query "$pkg" >/dev/null 2>&1; then
+            echo "already installed: $pkg"
+        else
+            missing+=("$pkg")
+        fi
+    done
+
+    [[ ${#missing[@]} -gt 0 ]] || return 0
+
+    sudo xbps-install -S "${missing[@]}"
 }
 
