@@ -8,6 +8,7 @@ hyprlock
 hypridle
 xdg-desktop-portal
 xdg-desktop-portal-hyprland
+xorg-minimal
 
 # --- Desktop core ----
 Waybar
@@ -25,6 +26,10 @@ wireplumber
 wireplumber-elogind
 alsa-pipewire
 
+# ---- Video ----
+mesa
+mesa-dri
+
 # ---- Hardware controls ----
 brightnessctl
 
@@ -32,6 +37,7 @@ brightnessctl
 fastfetch
 gnome-keyring
 udisks2
+socat
 
 # ---- Optional Hypr ecosystem ----
 hyprshot

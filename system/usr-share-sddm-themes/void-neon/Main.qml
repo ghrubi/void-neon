@@ -13,13 +13,32 @@ Rectangle {
     property string errorColor: "#ff4d6d"
     property bool loginFailed: false
 
+    ListView {
+        id: users
+
+        visible: false
+        width: 1
+        height: 1
+
+        model: userModel
+        currentIndex: userModel.lastIndex >= 0
+            ? userModel.lastIndex
+            : 0
+
+        delegate: Item {
+            property string username: model.name
+            width: 1
+            height: 1
+        }
+    }
+
     function currentUser() {
         if (userModel.lastUser && userModel.lastUser.length > 0) {
             return userModel.lastUser
         }
 
-        if (userModel.count > 0) {
-            return userModel.data(userModel.index(0, 0), Qt.DisplayRole)
+        if (users.currentItem) {
+            return users.currentItem.username
         }
 
         return ""

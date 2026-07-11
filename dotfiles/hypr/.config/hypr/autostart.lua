@@ -2,6 +2,7 @@
 local autostart = {
     -- Audio
     "pipewire",
+    "wireplumber",
 
     -- Desktop
     "mako",

@@ -16,6 +16,7 @@ rsync
 # ---- Core TUIs ----
 btop
 bluetui
+pulseaudio
 pulsemixer
 
 # ---- System ----
@@ -23,3 +24,5 @@ polkit
 xdg-utils
 power-profiles-daemon
 NetworkManager
+bluez
+bluetoothd
