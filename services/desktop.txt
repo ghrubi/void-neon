@@ -1,6 +1,5 @@
 # --- Login ----
 sddm
-elogind
 
 # ---- System ----
 seatd

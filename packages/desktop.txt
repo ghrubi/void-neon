@@ -1,6 +1,6 @@
 # --- Login ---
 sddm
-elogind
+seatd
 
 # --- Hyprland ----
 hyprland
@@ -8,7 +8,8 @@ hyprlock
 hypridle
 xdg-desktop-portal
 xdg-desktop-portal-hyprland
-#xorg-minimal
+xorg-minimal
+gsettings-desktop-schemas
 
 # --- Desktop core ----
 Waybar

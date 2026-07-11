@@ -15,7 +15,7 @@ install_package_file_original() {
 
   [[ ${#packages[@]} -gt 0 ]] || return 0
 
-  sudo xbps-install -S "${packages[@]}"
+  sudo xbps-install -Sy "${packages[@]}"
 }
 
 install_package_file() {
@@ -38,6 +38,6 @@ install_package_file() {
 
     [[ ${#missing[@]} -gt 0 ]] || return 0
 
-    sudo xbps-install -S "${missing[@]}"
+    sudo xbps-install -Sy "${missing[@]}"
 }
 
