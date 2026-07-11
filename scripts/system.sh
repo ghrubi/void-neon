@@ -10,6 +10,10 @@ install_system_files() {
       /usr/share/sddm/themes/void-neon
 
   install_file \
+      "$SYSTEM_DIR/usr-share-wayland-sessions/hyprland.desktop" \
+      /usr/share/wayland-sessions/hyprland.desktop
+
+  install_file \
     "$WALLPAPERS_DIR/void-logo-wallpaper.png" \
     /usr/share/sddm/themes/void-neon/background.png
 
