@@ -81,7 +81,7 @@ window#waybar {
 #tray {
     min-width: 0px;
     min-height: 0px;
-    padding: 0;
+    padding-right: 6px;
     margin: 0;
 }
 

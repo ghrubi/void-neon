@@ -58,3 +58,14 @@ hl.window_rule({
   opacity = standard_opacity,
 })
 
+-- LocalSend
+hl.window_rule({
+  match = {
+    title = "^LocalSend$"
+  },
+  float = true,
+  center = true,
+  size = {standard_width, standard_height },
+  opacity = standard_opacity,
+})
+
