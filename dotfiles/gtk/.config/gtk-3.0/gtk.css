@@ -1,0 +1,21 @@
+@define-color void_neon_accent #00e5ff;
+
+* {
+    font-family: Inter;
+}
+
+selection {
+    background-color: @void_neon_accent;
+    color: #000000;
+}
+
+entry:focus,
+button:focus,
+treeview:focus,
+list:focus {
+    border-color: @void_neon_accent;
+}
+
+tooltip {
+    border-radius: 3px;
+}
